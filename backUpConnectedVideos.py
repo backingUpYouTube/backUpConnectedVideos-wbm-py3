@@ -88,20 +88,27 @@ def main():
 				while True:
 					code = backUp(ID)
 					if code == 1:
-						print("The video with id {} wasn't saved properly".format(vID))
+						t.cancel()
+						print("https://www.youtube.com/watch?v={} wasn't saved properly".format(ID))
 						action=""
 						while action!='r' and action!='a' and action!='i':
-							action = ("Type r to retry,i to ignore or a to abort:\n")
+							action = input("Type r to retry,i to ignore or a to abort:\n")
 							action = action.rstrip().strip()
 						if action == 'r':
+							t.start()
 							continue
 						if action == 'i':
+							t.start()
 							i+=1
 							break
 						if action == 'a':
 							Break=True
 							i+=1
 							break
+					elif code == 2:
+						print("https://www.youtube.com/watch?v={} is unavailable, skipping...".format(ID))
+						i+=1
+						break
 					else:
 						m[ID]=True
 						i+=1
@@ -130,11 +137,13 @@ def gatherStartingFrom(vID):
 		if code == 1:
 			print("An error occured while trying to gather the videos...")
 			action=""
+			t.cancel()
 			while action!='r' and action!='a'  :
 				action = input("Type r to retry or a to abort:\n")
 				action = action.rstrip().strip()
 			if action == 'r':
 				#reset this
+				t.start()
 				q.append(head)
 				continue
 			if action == 'a':
@@ -198,12 +207,19 @@ def backUp(vID):
 		if 'closest' not in r.json()["archived_snapshots"]:
 			r2=snapShotPage(vID)
 			if r2.status_code != 200:
-				return 1
+				#Make a check to ensure the video isn't unavailable
+				if videoUnavailable(vID):
+					return 2
+				else:
+					return 1
 		r = annotationsBackedUp(vID)
 		if 'closest' not in r.json()["archived_snapshots"]:
 			r2=backUpAnnotations(vID)
 			if r2.status_code != 200:
-				return 1
+				if videoUnavailable(vID):
+					return 2
+				else:
+					return 1
 	except Exception as e:
 		print(e)
 		return 1
