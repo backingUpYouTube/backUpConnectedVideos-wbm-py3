@@ -3,4 +3,6 @@ For backing up interconnected videos (interactive videos, collaborations which a
 
 
 Run backUpConnectedVideos.py using Python 3. 
-When asked for the link it's highly recommended that you pick the "main" one if applicable (the "Start Here" video of an adventure game, The first part of a series etc.) 
+When asked for the link it's highly recommended that you pick the "main" one if applicable:
+* the "Start Here" video of an adventure game, 
+* The first part of a series etc.
