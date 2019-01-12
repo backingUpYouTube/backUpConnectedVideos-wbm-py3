@@ -119,7 +119,7 @@ def gatherStartingFrom(vID):
 	m={}
 	q=deque()
 	q.append(vID)
-	m[vId] = False
+	m[vID] = False
 
 	print("Gathering links... This might take a few moments...")
 	reportGathering()
